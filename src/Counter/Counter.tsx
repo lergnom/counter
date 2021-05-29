@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {Display} from "./Display/Display";
 
 export const Counter = () => {
     const MaxValue = 5;
@@ -12,7 +13,8 @@ export const Counter = () => {
 
     return (
         <>
-            Counter
+            Display show
+            <Display state={state}/>
         </>
     )
 }
