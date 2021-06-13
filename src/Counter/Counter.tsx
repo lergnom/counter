@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Display} from "./Display/Display";
 import {ButtonComp} from "./Button/Button";
+import {InputComp} from "./InputComp/InputComp";
+import s from "./Counter.module.css"
 
 export const Counter = () => {
     type  ButtonValuesTypeProps = {
@@ -118,25 +120,58 @@ export const Counter = () => {
     }
 
     return (
-        <>
-            Display show
-            <Display state={state}/>
-            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnInc.name}
-                    isDisabled={buttonValues.btnInc.isDisabled}/>
-            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnReset.name}
-                    isDisabled={buttonValues.btnReset.isDisabled}
-            />
-            <div>
-                Start value: <input name={'on'} type={'number'} value={onValue} onChange={onChangeOnValue}
-                                    onClick={disabledForm}
-                                    style={{display: 'block'}}
-            />
-                MaxValue: <input name={"off"} value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
-                                 type={'number'} onClick={disabledForm}/>
+        <div className={s.counter}>
+            <div className={s.setContainer}>
+                <div className={s.setContainerWrapper}>
+                    <div className={s.setInputValue}>
+                        <span>max value:</span>
+                        <InputComp name={"off"} value={offValue} onChange={onChangeOffValue}
+                                   onClick={disabledForm}/>
+                    </div>
+                    <div className={s.setInputValue}>
+                        <span>start value:</span>
+                        <InputComp name={"on"} value={onValue} onChange={onChangeOnValue} onClick={disabledForm}/>
+                    </div>
+                </div>
+                <div className={s.setContainerWrapper}>
+                    <div style={{padding: "10px"}}>
+                        <ButtonComp key={buttonValues.btnSet.id} buttonClickOnHandler={buttonClickOnHandler}
+                                    btnName={buttonValues.btnSet.name}
+                                    isDisabled={buttonValues.btnSet.isDisabled}
+                        />
+                    </div>
+
+                </div>
             </div>
-            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
-                    isDisabled={buttonValues.btnSet.isDisabled}
-            />
-        </>
+
+            {/*<input name={'on'} type={'number'} value={onValue} onChange={onChangeOnValue}
+                                    onClick={disabledForm}
+                                    style={{display: 'block'}} />*/}
+
+
+            {/*<input name={"off"} value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
+                                 type={'number'} onClick={disabledForm}/>*/}
+            <div className={s.setContainer}>
+
+                <div className={s.setContainerWrapper}>
+                    Display show
+                    <Display state={state}/>
+
+
+                </div>
+                <div className={s.setContainerWrapper} style={{flexDirection: "row", justifyContent: "space-around"}}>
+                    <ButtonComp key={buttonValues.btnInc.id} buttonClickOnHandler={buttonClickOnHandler}
+                                btnName={buttonValues.btnInc.name}
+                                isDisabled={buttonValues.btnInc.isDisabled}/>
+                    <ButtonComp key={buttonValues.btnReset.id} buttonClickOnHandler={buttonClickOnHandler}
+                                btnName={buttonValues.btnReset.name}
+                                isDisabled={buttonValues.btnReset.isDisabled}
+                    />
+                </div>
+
+            </div>
+
+
+        </div>
     )
 }
