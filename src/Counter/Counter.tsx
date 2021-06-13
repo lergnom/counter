@@ -12,12 +12,6 @@ export const Counter = () => {
         [buttons: string]: ButtonValuesTypeProps
     }
 
-    const [startValue, setStartValue] = useState(localStorageStartValue())
-    const [maxValue, setMaxValue] = useState(localStorageMaxValue());
-    const btnInc = '+'
-    const btnReset = 'reset'
-    const btnSet = 'set'
-
     function localStorageStartValue() {
         return localStorage.getItem('setStart') ? JSON.parse(localStorage.setStart) : 0
     }
@@ -26,13 +20,17 @@ export const Counter = () => {
         return localStorage.getItem('setMax') ? JSON.parse(localStorage.setMax) : 5
     }
 
+    const [startValue, setStartValue] = useState(localStorageStartValue())
+    const [maxValue, setMaxValue] = useState(localStorageMaxValue());
+    const btnInc = '+'
+    const btnReset = 'reset'
+    const btnSet = 'set'
 
     const [buttonValues, setButtonValues] = useState<CounterTypeProps>({
         btnInc: {id: 1, name: btnInc, isDisabled: false},
         btnReset: {id: 2, name: btnReset, isDisabled: true},
         btnSet: {id: 3, name: btnSet, isDisabled: false}
     })
-
 
     const [state, setState] = useState(startValue)
     const [onValue, setOnValue] = useState(startValue)
@@ -53,7 +51,6 @@ export const Counter = () => {
             setState(state + 1)
             const copy = {...buttonValues, btnReset: {...buttonValues.btnReset, isDisabled: false}}
             setButtonValues(copy)
-
         }
     }
 
@@ -62,12 +59,25 @@ export const Counter = () => {
         setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: false}})
     }
 
+    const disabledForm = () => {
+        setButtonValues({
+            ...buttonValues,
+            btnInc: {...buttonValues.btnInc, isDisabled: true},
+            btnReset: {...buttonValues.btnReset, isDisabled: true}
+        })
+    }
+
     function setCounter() {
         setStartValue(onValue)
         setMaxValue(offValue)
         setState(onValue)
         localStorage.setItem('setStart', JSON.stringify(onValue));
         localStorage.setItem('setMax', JSON.stringify(offValue));
+        setButtonValues({
+            ...buttonValues,
+            btnInc: {...buttonValues.btnInc, isDisabled: false},
+            btnReset: {...buttonValues.btnReset, isDisabled: false}
+        })
     }
 
     const buttonClickOnHandler = (btnName: string) => {
@@ -110,13 +120,12 @@ export const Counter = () => {
             <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnReset.name}
                     isDisabled={buttonValues.btnReset.isDisabled}
             />
-
             <div>
-                Start value: <input type={'number'} value={onValue} onChange={onChangeOnValue}
+                Start value: <input type={'number'} value={onValue} onChange={onChangeOnValue} onClick={disabledForm}
                                     style={{display: 'block'}}
             />
                 MaxValue: <input value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
-                                 type={'number'}/>
+                                 type={'number'} onClick={disabledForm}/>
             </div>
             <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
                     isDisabled={buttonValues.btnSet.isDisabled}
