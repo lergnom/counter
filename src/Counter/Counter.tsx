@@ -12,18 +12,22 @@ export const Counter = () => {
         [buttons: string]: ButtonValuesTypeProps
     }
 
-    const startValue = 3
-    const maxValue = 8;
+    let startValue = 3
+    let maxValue = 8;
     const btnInc = '+'
     const btnReset = 'reset'
+    const btnSet = 'set'
 
     const [buttonValues, setButtonValues] = useState<CounterTypeProps>({
         btnInc: {id: 1, name: btnInc, isDisabled: false},
-        btnReset: {id: 1, name: btnReset, isDisabled: true}
+        btnReset: {id: 2, name: btnReset, isDisabled: true},
+        btnSet: {id: 3, name: btnSet, isDisabled: false}
     })
 
 
     const [state, setState] = useState(startValue)
+    const [onValue, setOnValue] = useState(startValue)
+    const [offValue, setOffValue] = useState(maxValue)
 
     useEffect(() => {
         if (state === maxValue) {
@@ -58,6 +62,26 @@ export const Counter = () => {
         if (btnName === btnReset) {
             resetValue()
         }
+        if (btnName === btnSet) {
+            alert("set")
+        }
+    }
+
+    const onChangeOnValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let num = Number(e.currentTarget.value)
+        if (num < offValue) {
+            setOnValue(num)
+
+        }
+    }
+
+    const onChangeOffValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let num = Number(e.currentTarget.value)
+        if (num > onValue) {
+            setOffValue(num)
+        } else {
+            console.log("Максимальное значение не может быть меньше стартового")
+        }
     }
 
     return (
@@ -69,6 +93,17 @@ export const Counter = () => {
                     isDisabled={buttonValues.btnInc.isDisabled}/>
             <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnReset.name}
                     isDisabled={buttonValues.btnReset.isDisabled}
+            />
+
+            <div>
+                Start value: <input type={'number'} value={onValue} onChange={onChangeOnValue}
+                                    style={{display: 'block'}}
+            />
+                MaxValue: <input value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
+                                 type={'number'}/>
+            </div>
+            <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
+                    isDisabled={buttonValues.btnSet.isDisabled}
             />
         </>
     )
