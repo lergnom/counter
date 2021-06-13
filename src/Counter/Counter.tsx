@@ -81,22 +81,27 @@ export const Counter = () => {
     }
 
     const buttonClickOnHandler = (btnName: string) => {
-        if (btnName === btnInc) {
-            addInc()
-        }
-        if (btnName === btnReset) {
-            resetValue()
-        }
-        if (btnName === btnSet) {
-            setCounter()
+        switch (btnName) {
+            case btnInc:
+                addInc()
+                break;
+            case btnReset:
+                resetValue()
+                break;
+            case btnSet:
+                setCounter()
+                break;
         }
     }
 
     const onChangeOnValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.currentTarget.name)
         let num = Number(e.currentTarget.value)
         if (num < offValue) {
             setOnValue(num)
+            setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
         } else {
+            setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
             console.log("стартовое значение не может быть больше счетчика")
         }
     }
@@ -105,14 +110,15 @@ export const Counter = () => {
         let num = Number(e.currentTarget.value)
         if (num > onValue) {
             setOffValue(num)
+            setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
         } else {
+            setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
             console.log("Максимальное значение не может быть меньше стартового")
         }
     }
 
     return (
         <>
-
             Display show
             <Display state={state}/>
             <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnInc.name}
@@ -121,10 +127,11 @@ export const Counter = () => {
                     isDisabled={buttonValues.btnReset.isDisabled}
             />
             <div>
-                Start value: <input type={'number'} value={onValue} onChange={onChangeOnValue} onClick={disabledForm}
+                Start value: <input name={'on'} type={'number'} value={onValue} onChange={onChangeOnValue}
+                                    onClick={disabledForm}
                                     style={{display: 'block'}}
             />
-                MaxValue: <input value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
+                MaxValue: <input name={"off"} value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
                                  type={'number'} onClick={disabledForm}/>
             </div>
             <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
