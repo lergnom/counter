@@ -19,15 +19,11 @@ export const Counter = () => {
     const btnSet = 'set'
 
     function localStorageStartValue() {
-        if (localStorage.getItem('setStart')) {
-            return JSON.parse(localStorage.setStart)
-        } else return 0
+        return localStorage.getItem('setStart') ? JSON.parse(localStorage.setStart) : 0
     }
 
     function localStorageMaxValue() {
-        if (localStorage.getItem('setMax')) {
-            return JSON.parse(localStorage.setMax)
-        } else return 5
+        return localStorage.getItem('setMax') ? JSON.parse(localStorage.setMax) : 5
     }
 
 
