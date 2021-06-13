@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Display} from "./Display/Display";
-import {Button} from "./Button/Button";
+import {ButtonComp} from "./Button/Button";
 
 export const Counter = () => {
     type  ButtonValuesTypeProps = {
@@ -121,9 +121,9 @@ export const Counter = () => {
         <>
             Display show
             <Display state={state}/>
-            <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnInc.name}
+            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnInc.name}
                     isDisabled={buttonValues.btnInc.isDisabled}/>
-            <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnReset.name}
+            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnReset.name}
                     isDisabled={buttonValues.btnReset.isDisabled}
             />
             <div>
@@ -134,7 +134,7 @@ export const Counter = () => {
                 MaxValue: <input name={"off"} value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
                                  type={'number'} onClick={disabledForm}/>
             </div>
-            <Button buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
+            <ButtonComp buttonClickOnHandler={buttonClickOnHandler} btnName={buttonValues.btnSet.name}
                     isDisabled={buttonValues.btnSet.isDisabled}
             />
         </>

@@ -1,4 +1,5 @@
 import React from "react";
+import {Button} from "@material-ui/core";
 
 type ButtonsTypeProps = {
     buttonClickOnHandler: (str: string) => void
@@ -6,10 +7,10 @@ type ButtonsTypeProps = {
     isDisabled: boolean
 }
 
-export const Button = ({buttonClickOnHandler, btnName, isDisabled}: ButtonsTypeProps) => {
+export const ButtonComp = ({buttonClickOnHandler, btnName, isDisabled}: ButtonsTypeProps) => {
     return (
-        <button disabled={isDisabled} onClick={() => {
+        <Button variant={"contained"} color={"primary"} disabled={isDisabled} onClick={() => {
             buttonClickOnHandler(btnName)
-        }}>{btnName}</button>
+        }}>{btnName}</Button>
     )
 }
