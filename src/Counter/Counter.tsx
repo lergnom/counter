@@ -12,11 +12,24 @@ export const Counter = () => {
         [buttons: string]: ButtonValuesTypeProps
     }
 
-    let startValue = 3
-    let maxValue = 8;
+    const [startValue, setStartValue] = useState(localStorageStartValue())
+    const [maxValue, setMaxValue] = useState(localStorageMaxValue());
     const btnInc = '+'
     const btnReset = 'reset'
     const btnSet = 'set'
+
+    function localStorageStartValue() {
+        if (localStorage.getItem('setStart')) {
+            return JSON.parse(localStorage.setStart)
+        } else return 0
+    }
+
+    function localStorageMaxValue() {
+        if (localStorage.getItem('setMax')) {
+            return JSON.parse(localStorage.setMax)
+        } else return 5
+    }
+
 
     const [buttonValues, setButtonValues] = useState<CounterTypeProps>({
         btnInc: {id: 1, name: btnInc, isDisabled: false},
@@ -48,11 +61,17 @@ export const Counter = () => {
         }
     }
 
-
     function resetValue() {
         setState(startValue)
         setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: false}})
+    }
 
+    function setCounter() {
+        setStartValue(onValue)
+        setMaxValue(offValue)
+        setState(onValue)
+        localStorage.setItem('setStart', JSON.stringify(onValue));
+        localStorage.setItem('setMax', JSON.stringify(offValue));
     }
 
     const buttonClickOnHandler = (btnName: string) => {
@@ -63,7 +82,7 @@ export const Counter = () => {
             resetValue()
         }
         if (btnName === btnSet) {
-            alert("set")
+            setCounter()
         }
     }
 
@@ -71,7 +90,8 @@ export const Counter = () => {
         let num = Number(e.currentTarget.value)
         if (num < offValue) {
             setOnValue(num)
-
+        } else {
+            console.log("стартовое значение не может быть больше счетчика")
         }
     }
 
