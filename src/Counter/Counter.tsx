@@ -34,13 +34,18 @@ export const Counter = () => {
         btnSet: {id: 3, name: btnSet, isDisabled: false}
     })
 
+
     const [state, setState] = useState(startValue)
     const [onValue, setOnValue] = useState(startValue)
     const [offValue, setOffValue] = useState(maxValue)
+    const [error, setError] = useState(false)
+    const [hint, setHint] = useState<string>("")
+
 
     useEffect(() => {
         if (state === maxValue) {
             setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: true}})
+            setError(true)
         }
         if (state === startValue) {
             setButtonValues({...buttonValues, btnReset: {...buttonValues.btnReset, isDisabled: true}})
@@ -78,7 +83,7 @@ export const Counter = () => {
         setButtonValues({
             ...buttonValues,
             btnInc: {...buttonValues.btnInc, isDisabled: false},
-            btnReset: {...buttonValues.btnReset, isDisabled: false}
+            btnReset: {...buttonValues.btnReset, isDisabled: true}
         })
     }
 
@@ -102,8 +107,11 @@ export const Counter = () => {
         if (num < offValue) {
             setOnValue(num)
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
+            setHint("")
+
         } else {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
+            setHint("стартовое значение не может быть больше счетчика")
             console.log("стартовое значение не может быть больше счетчика")
         }
     }
@@ -113,9 +121,11 @@ export const Counter = () => {
         if (num > onValue) {
             setOffValue(num)
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
+            setHint("")
         } else {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
             console.log("Максимальное значение не может быть меньше стартового")
+            setHint("Максимальное значение не может быть меньше стартового")
         }
     }
 
@@ -154,8 +164,7 @@ export const Counter = () => {
             <div className={s.setContainer}>
 
                 <div className={s.setContainerWrapper}>
-                    Display show
-                    <Display state={state}/>
+                    <Display state={state} hint={hint}/>
 
 
                 </div>

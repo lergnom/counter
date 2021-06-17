@@ -2,6 +2,11 @@
     display: flex;
 }
 
+.dispText {
+    font-size: 70px;
+    color: white;
+}
+
 .setContainer {
     margin-top: 50px;
     margin-left: 50px;
