@@ -8,9 +8,12 @@ type DisplayTypeProps = {
 }
 
 export function Display(props: DisplayTypeProps) {
+
     return (
-        <> {props.hint}
-            <div className={s.dispText}>{props.state}</div>
+        <>
+            {/*{showDisplay}*/}
+            {props.hint === '' && <div className={s.dispText}>{props.state}</div>}
+            {props.hint !== '' && <div className={s.dispHint}>{props.hint}</div>}
         </>
     )
 }

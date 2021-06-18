@@ -7,6 +7,10 @@
     color: white;
 }
 
+.dispHint {
+    color: red;
+}
+
 .setContainer {
     margin-top: 50px;
     margin-left: 50px;

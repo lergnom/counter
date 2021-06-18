@@ -6,11 +6,11 @@ type InputCompTypeProps = {
     value: number
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onClick: () => void
-}
+    }
 
 export const InputComp = (props: InputCompTypeProps) => {
     return (
-        <TextField style={{width: "80px"}} value={props.value}
+        <TextField style={{width: "80px",backgroundColor: "white"}} value={props.value}
                    name={props.name}
                    variant={"outlined"}
                    size={"small"}
