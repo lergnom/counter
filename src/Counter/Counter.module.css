@@ -7,7 +7,14 @@
     color: white;
 }
 
+.dispError {
+    font-size: 70px;
+    color: red;
+}
+
 .dispHint {
+    margin: 20px 20px;
+    padding: 5px;
     color: red;
 }
 

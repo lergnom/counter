@@ -64,6 +64,7 @@ export const Counter = () => {
     function resetValue() {
         setState(startValue)
         setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: false}})
+        setError(false)
     }
 
     const disabledForm = () => {
@@ -104,28 +105,28 @@ export const Counter = () => {
     const onChangeOnValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.currentTarget.name)
         let num = Number(e.currentTarget.value)
+        setOnValue(num)
         if (num < offValue) {
-            setOnValue(num)
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
             setHint("")
 
         } else {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
-            setHint("стартовое значение не может быть больше счетчика")
+            setHint("стартовое значение не может быть больше и равно счетчику")
             console.log("стартовое значение не может быть больше счетчика")
         }
     }
 
     const onChangeOffValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         let num = Number(e.currentTarget.value)
+        setOffValue(num)
         if (num > onValue) {
-            setOffValue(num)
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
             setHint("")
         } else {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
             console.log("Максимальное значение не может быть меньше стартового")
-            setHint("Максимальное значение не может быть меньше стартового")
+            setHint("Максимальное значение не может быть меньше или равен стартовому")
         }
     }
 
@@ -136,11 +137,12 @@ export const Counter = () => {
                     <div className={s.setInputValue}>
                         <span>max value:</span>
                         <InputComp name={"off"} value={offValue} onChange={onChangeOffValue}
-                                   onClick={disabledForm}/>
+                                   onClick={disabledForm} hint={hint}/>
                     </div>
                     <div className={s.setInputValue}>
                         <span>start value:</span>
-                        <InputComp name={"on"} value={onValue} onChange={onChangeOnValue} onClick={disabledForm}/>
+                        <InputComp name={"on"} value={onValue} onChange={onChangeOnValue} onClick={disabledForm}
+                                   hint={hint}/>
                     </div>
                 </div>
                 <div className={s.setContainerWrapper}>
@@ -154,17 +156,10 @@ export const Counter = () => {
                 </div>
             </div>
 
-            {/*<input name={'on'} type={'number'} value={onValue} onChange={onChangeOnValue}
-                                    onClick={disabledForm}
-                                    style={{display: 'block'}} />*/}
-
-
-            {/*<input name={"off"} value={offValue} onChange={onChangeOffValue} style={{display: 'block'}}
-                                 type={'number'} onClick={disabledForm}/>*/}
             <div className={s.setContainer}>
 
                 <div className={s.setContainerWrapper}>
-                    <Display state={state} hint={hint}/>
+                    <Display state={state} hint={hint} error={error}/>
 
 
                 </div>
