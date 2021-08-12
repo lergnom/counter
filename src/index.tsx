@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Counter} from "./Counter/Counter";
-
-
+import {Counter} from "./components/Counter";
+import {Provider} from "react-redux";
+import {store} from "./state/store";
 
 
 ReactDOM.render(
-
     <React.StrictMode>
-        <Counter/>
+        <Provider store={store}>
+            <Counter/>
+        </Provider>
         {/*<App />*/}
     </React.StrictMode>,
     document.getElementById('root')

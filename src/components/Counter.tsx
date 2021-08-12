@@ -3,45 +3,52 @@ import {Display} from "./Display/Display";
 import {ButtonComp} from "./Button/Button";
 import {InputComp} from "./InputComp/InputComp";
 import s from "./Counter.module.css"
+import {useDispatch, useSelector} from "react-redux";
+import {
+    addIncCounter,
+    resetValueCounter,
+    setMaxValue,
+    setOffValue,
+    setOnValue,
+    setStartValue
+} from "../state/counter-reducer";
+import {AppRootReducer} from "../state/store";
+
+type  ButtonValuesTypeProps = {
+    id: number
+    name: string
+    isDisabled: boolean
+}
+type CounterTypeProps = {
+    [buttons: string]: ButtonValuesTypeProps
+}
 
 export const Counter = () => {
-    type  ButtonValuesTypeProps = {
-        id: number
-        name: string
-        isDisabled: boolean
-    }
-    type CounterTypeProps = {
-        [buttons: string]: ButtonValuesTypeProps
-    }
-
-    function localStorageStartValue() {
-        return localStorage.getItem('setStart') ? JSON.parse(localStorage.setStart) : 0
-    }
-
-    function localStorageMaxValue() {
-        return localStorage.getItem('setMax') ? JSON.parse(localStorage.setMax) : 5
-    }
-
-    const [startValue, setStartValue] = useState(localStorageStartValue())
-    const [maxValue, setMaxValue] = useState(localStorageMaxValue());
+    //Названия кнопочек
     const btnInc = '+'
     const btnReset = 'reset'
     const btnSet = 'set'
 
+    // Хук для включения выключения кнопок и отрисовок
     const [buttonValues, setButtonValues] = useState<CounterTypeProps>({
         btnInc: {id: 1, name: btnInc, isDisabled: false},
         btnReset: {id: 2, name: btnReset, isDisabled: true},
         btnSet: {id: 3, name: btnSet, isDisabled: false}
     })
 
-
-    const [state, setState] = useState(startValue)
-    const [onValue, setOnValue] = useState(startValue)
-    const [offValue, setOffValue] = useState(maxValue)
+    //Хук для показа  ошибок и всплывающих уведомлений
     const [error, setError] = useState(false)
     const [hint, setHint] = useState<string>("")
 
+    //Перевод счетчика на Redux и использование хуков useSelector и useDispatch
+    const state = useSelector<AppRootReducer, number>((state) => state.counter.state)
+    const startValue = useSelector<AppRootReducer, number>((state) => state.counter.startValue)
+    const maxValue = useSelector<AppRootReducer, number>((state) => state.counter.maxValue)
+    const onValue = useSelector<AppRootReducer, number>((state) => state.counter.onValue)
+    const offValue = useSelector<AppRootReducer, number>((state) => state.counter.offValue)
+    const dispatch = useDispatch()
 
+    //Использование хука UseEffect для корректной отрисовки счетчика
     useEffect(() => {
         if (state === maxValue) {
             setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: true}})
@@ -52,17 +59,16 @@ export const Counter = () => {
         }
     }, [state])
 
-
     function addInc() {
         if (state < maxValue) {
-            setState(state + 1)
+            dispatch(addIncCounter(state))
             const copy = {...buttonValues, btnReset: {...buttonValues.btnReset, isDisabled: false}}
             setButtonValues(copy)
         }
     }
 
     function resetValue() {
-        setState(startValue)
+        dispatch(resetValueCounter(startValue))
         setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: false}})
         setError(false)
     }
@@ -76,9 +82,9 @@ export const Counter = () => {
     }
 
     function setCounter() {
-        setStartValue(onValue)
-        setMaxValue(offValue)
-        setState(onValue)
+        dispatch(setStartValue(onValue))
+        dispatch(setMaxValue(offValue))
+        dispatch(resetValueCounter(onValue))
         localStorage.setItem('setStart', JSON.stringify(onValue));
         localStorage.setItem('setMax', JSON.stringify(offValue));
         setButtonValues({
@@ -105,7 +111,7 @@ export const Counter = () => {
     const onChangeOnValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.currentTarget.name)
         let num = Number(e.currentTarget.value)
-        setOnValue(num)
+        dispatch(setOnValue(num))
         if (num < offValue) {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
             setHint("")
@@ -119,14 +125,14 @@ export const Counter = () => {
 
     const onChangeOffValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         let num = Number(e.currentTarget.value)
-        setOffValue(num)
+        dispatch(setOffValue(num))
         if (num > onValue) {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: false}})
             setHint("")
         } else {
             setButtonValues({...buttonValues, btnSet: {...buttonValues.btnSet, isDisabled: true}})
             console.log("Максимальное значение не может быть меньше стартового")
-            setHint("Максимальное значение не может быть меньше или равен стартовому")
+            setHint("Максимальное значение не может быть меньше или равно стартовому")
         }
     }
 
