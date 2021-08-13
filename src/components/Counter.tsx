@@ -29,14 +29,14 @@ export const Counter = () => {
     const btnReset = 'reset'
     const btnSet = 'set'
 
-    // Хук для включения выключения кнопок и отрисовок
+    // Хук useState для включения выключения кнопок и отрисовок
     const [buttonValues, setButtonValues] = useState<CounterTypeProps>({
         btnInc: {id: 1, name: btnInc, isDisabled: false},
         btnReset: {id: 2, name: btnReset, isDisabled: true},
         btnSet: {id: 3, name: btnSet, isDisabled: false}
     })
 
-    //Хук для показа  ошибок и всплывающих уведомлений
+    //Хук useState для показа  ошибок и всплывающих уведомлений
     const [error, setError] = useState(false)
     const [hint, setHint] = useState<string>("")
 
@@ -48,7 +48,7 @@ export const Counter = () => {
     const offValue = useSelector<AppRootReducer, number>((state) => state.counter.offValue)
     const dispatch = useDispatch()
 
-    //Использование хука UseEffect для корректной отрисовки счетчика
+    //Использование хука UseEffect для корректной отрисовки состояния кнопок
     useEffect(() => {
         if (state === maxValue) {
             setButtonValues({...buttonValues, btnInc: {...buttonValues.btnInc, isDisabled: true}})
